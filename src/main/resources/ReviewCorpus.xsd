@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns="http://github.com/sandor-balazs/sentiment-analysis/jaxb/corpus"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    jaxb:version="1.0"
+    targetNamespace="http://github.com/sandor-balazs/sentiment-analysis/jaxb/corpus">
+    <xs:complexType name="Opinion">
+        <xs:attribute name="category" type="xs:string"/>
+        <xs:attribute name="polarity" type="xs:string"/>
+        <xs:attribute name="target" type="xs:string"/>
+        <xs:attribute name="from" type="xs:decimal"/>
+        <xs:attribute name="to" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="OpinionContainer">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" name="Opinion" type="Opinion">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <jaxb:property name="opinions"/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Sentence">
+        <xs:sequence>
+            <xs:element name="text" type="xs:string"/>
+            <xs:element name="Opinions" type="OpinionContainer">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <jaxb:property name="opinionContainer"/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>
+        <xs:attribute name="OutOfScope" type="xs:boolean"/>
+    </xs:complexType>
+    <xs:complexType name="SentenceContainer">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" name="sentence" type="Sentence">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <jaxb:property name="sentences"/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Review">
+        <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="sentences" type="SentenceContainer">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <jaxb:property name="sentenceContainer"/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="rid" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:appinfo>
+                    <jaxb:property name="id"/>
+                </xs:appinfo>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:element name="Reviews">
+        <xs:annotation>
+            <xs:appinfo>
+                <jaxb:class name="ReviewCorpus"/>
+            </xs:appinfo>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" name="Review" type="Review">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <jaxb:property name="reviews"/>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

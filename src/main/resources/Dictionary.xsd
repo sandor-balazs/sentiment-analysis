@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns="http://github.com/sandor-balazs/sentiment-analysis/jaxb/dictionary"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    jaxb:version="1.0"
+    targetNamespace="http://github.com/sandor-balazs/sentiment-analysis/jaxb/dictionary">
+    <xs:complexType name="Phrase">
+        <xs:attribute name="text" type="xs:string" use="required"/>
+        <xs:attribute name="score" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="Attribute">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" name="phrase" type="Phrase">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <jaxb:property name="phrases"/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Entity">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" name="phrase" type="Phrase">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <jaxb:property name="phrases"/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="1" name="attribute" type="Attribute">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <jaxb:property name="attributes"/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:element name="dictionary">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" name="entity" type="Entity">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <jaxb:property name="entities"/>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

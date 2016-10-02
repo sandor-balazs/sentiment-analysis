@@ -1,0 +1,44 @@
+language: java
+
+jdk:
+  - oraclejdk8
+
+sudo: required
+
+dist: trusty
+
+addons:
+  apt:
+    packages:
+      - lmodern
+      - texlive-fonts-recommended
+      - texlive-fonts-extra
+      - texlive-latex-recommended
+      - texlive-latex-extra
+      - texlive-science
+      - texlive-xetex
+      - latex-xcolor
+      - python-pygments
+
+before_install:
+  - wget http://lingpipe-download.s3.amazonaws.com/lingpipe-4.1.0.jar
+  - mvn install:install-file -Dfile=lingpipe-4.1.0.jar -DgroupId=com.aliasi -DartifactId=lingpipe -Dversion=4.1.0 -Dpackaging=jar
+
+before_script:
+  - make all
+
+script:
+  - mvn install -DskipTests=true
+
+deploy:
+  provider: releases
+  api_key:
+    secure: NQRBkQ7TfXqrYGdBfmRWI1a7YmJmCax5HTI15wy4oeYZfo35pLhD+9ewiuKtUQc3ynJjW99A2BT3buPc/yr3Sg3kqpTTX36+bixazYXT4lzv9StpHWnuIqgg2D10gT/A2iZT0qPrjP2amVSW2+NVYcrmGQOXiZBW9llZnDayi+0iYMr0XYLC+Tab32LLv8hJnMoL52qCYNA27oP9ToDqmMpmjH5bLMnwEjxKhOSD6tqZmFExMFrGEZo9OJHb1/BgA0wAXf4i6vYDchuaikvnO7Nyaze/TSPt4+as6ZThby4MIchWrZZlTCvXU/7LEH4Iqv/D890Gjl5kfBx2fkY6iu8/67fTwVqdTHu/Irgof/GYeAPDfKyFqeCsbgj2jteL11peYQl6kHvwuOqL8P1uHv00h06DhSxHAF7j6gdPfRzeSl1465kPLEg4UBZdug5HAqNPHYrMaLU2HjfS01cKWl8KCuN42l+4UVAWWDB2lIyNUsM35o9vaU347dAhW91QcfmDO36JlpjwvFpXnwqBzk8acmP7ahYggq23VN+nfA+F2dGBMP3me53SBrGtYMWbjdjmGpnWX4vOGX8we18OA3bhZsPpBbzZI9b6NeRMeS77KGMURZZBVlD74TaHjQ2Jo5rHc2+QzOlD4MWCa0efPp1eL/bz3VsIjVi4/3BqfrI=
+  file_glob: true
+  file:
+    - target/documentation/sentiment-analysis.pdf
+    - target/sentiment-analysis-*.jar
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: sandor-balazs/sentiment-analysis
